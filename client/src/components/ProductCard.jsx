@@ -1,12 +1,12 @@
 /**
  * Import Components
  */
-import React from "react";
-import { Link } from "react-router-dom";
-import currency from "currency-formatter";
-import { motion } from "framer-motion";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import currency from 'currency-formatter';
+import { motion } from 'framer-motion';
 
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar } from 'react-icons/ai';
 
 const ProductCard = ({ product, handleSetBreadCrumb }) => {
   const percentage = product.discount / 100;
@@ -72,12 +72,12 @@ const ProductCard = ({ product, handleSetBreadCrumb }) => {
               <span>({total})</span>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="w-full grid">
             <span className="text-lg font-medium text-black">
-              {currency.format(discountPrice, { code: "USD" })}
+              {currency.format(discountPrice, { code: 'VND' })}
             </span>
-            <span className="text-lg font-medium text-yellow-500 line-through">
-              {currency.format(product.price, { code: "USD" })}
+            <span className="text-base font-light text-yellow-500 line-through">
+              {currency.format(product.price, { code: 'VND' })}
             </span>
           </div>
         </div>

@@ -8,7 +8,7 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { ImCross } from 'react-icons/im';
 import { clearMessage, setSuccess } from '../../redux/reducers/globalReducer';
 import {
   useGetOrdersQuery,
@@ -64,7 +64,7 @@ const AdminOrder = () => {
 
   useEffect(() => {
     if (res?.isSuccess) {
-      orders.refetch();
+      orders.refetch(page);
       toast.handleOpenToastify('success', 'Update successfully', 1000);
       setOpenModal(false);
     }
@@ -73,118 +73,139 @@ const AdminOrder = () => {
   return (
     <div>
       {openModal && (
-        <div className="2xl:w-[1400px] overflow-x-scroll">
-          <Modal
-            setOpen={setOpenModal}
-            className="2xl:overflow-x-auto w-[1500px]"
-          >
-            <div className="modal_container bg-white w-[90%] h-[90%] p-[20px] z-[60]">
-              <div className="flex justify-between text-[30px] uppercase">
-                <p>Cart</p>
-                <AiOutlineCloseCircle
+        <div className="scroll-none overflow-x-scroll">
+          <Modal setOpen={setOpenModal} className="overflow-x-auto w-full">
+            <div className="modal_container bg-white w-[80%] h-[90%] p-5 z-[60] rounded-lg">
+              <div className="flex justify-between items-center text-slate-800 font-bold text-[30px] uppercase">
+                <p>Bill Order</p>
+                <ImCross
                   onClick={() => setOpenModal(false)}
-                  className="rounded-[100%] text-cyan-500 hover:bg-red-900 border-white hover:text-black cursor-pointer"
+                  className="text-[#242424] hover:text-red-600 cursor-pointer"
+                  size={24}
                 />
               </div>
-              <p className="mt-[20px] font-bold ">
-                Customer Informations
+              <hr className="my-2"></hr>
+              <div className="mt-3 grid grid-cols-2 gap-5">
+                <div className="w-full">
+                  <p
+                    htmlFor=""
+                    className="label block mb-1 text-sm text-gray-700"
+                  >
+                    Name:
+                  </p>
+                  <input
+                    className="input-white"
+                    placeholder="Enter customer name"
+                    value={infoUser.name}
+                    onChange={(e) =>
+                      dispatch(
+                        setInfoUser({ ...infoUser, name: e.target.value })
+                      )
+                    }
+                  />
+                </div>
+                <div className="w-full">
+                  <p
+                    htmlFor=""
+                    className="label block mb-1 text-sm text-gray-700"
+                  >
+                    Adress:
+                  </p>
+                  <input
+                    value={infoUser.address}
+                    className="input-white"
+                    placeholder="Enter customer adress"
+                    onChange={(e) =>
+                      dispatch(
+                        setInfoUser({
+                          ...infoUser,
+                          address: e.target.value,
+                        })
+                      )
+                    }
+                  />
+                </div>
+                <div className="w-full">
+                  <p
+                    htmlFor=""
+                    className="label block mb-1 text-sm text-gray-700"
+                  >
+                    Phone:
+                  </p>
+                  <input
+                    value={infoUser.phone}
+                    className="input-white"
+                    placeholder="Enter customer phone number"
+                    onChange={(e) =>
+                      dispatch(
+                        setInfoUser({ ...infoUser, phone: e.target.value })
+                      )
+                    }
+                  />
+                </div>
+                <div className="w-full">
+                  <p
+                    htmlFor=""
+                    className="label block mb-1 text-sm text-gray-700"
+                  >
+                    Status:
+                  </p>
+                  <select
+                    id="countries"
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5"
+                  >
+                    <option selected={status === 'WAITTING'} value="WAITTING">
+                      WAITTING
+                    </option>
+                    <option selected={status === 'DELIVERED'} value="DELIVERED">
+                      DELIVERED
+                    </option>
+                    <option selected={status === 'FINISH'} value="FINISH">
+                      FINISH
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <p className="mt-10 font-bold uppercase text-lg text-center">
+                Product Informations
               </p>
-              <hr className="mt-[5px] mb-[10px] h-[1.5px]" />
-              <div className="w-[70%] flex mb-[20px]">
-                <p
-                  htmlFor=""
-                  className="text-[17px] mr-[10px] w-[25%] font-[16px] outline-0"
-                >
-                  {' '}
-                  Name:
-                </p>
-                <input
-                  className="border-2 w-[75%] py-[5px] px-[10px] rounded-[10px]"
-                  placeholder="Enter customer name"
-                  value={infoUser.name}
-                  onChange={(e) =>
-                    dispatch(setInfoUser({ ...infoUser, name: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="w-[70%] flex mb-[20px]">
-                <p htmlFor="" className="text-[17px] mr-[10px] w-[25%]">
-                  {' '}
-                  Adress:
-                </p>
-                <input
-                  value={infoUser.address}
-                  className="border-2 w-[75%] py-[5px] px-[10px] rounded-[10px]"
-                  placeholder="Enter customer adress"
-                  onChange={(e) =>
-                    dispatch(
-                      setInfoUser({
-                        ...infoUser,
-                        address: e.target.value,
-                      })
-                    )
-                  }
-                />
-              </div>
-              <div className="w-[70%] flex mb-[20px]">
-                <p htmlFor="" className="text-[17px] mr-[10px] w-[25%]">
-                  {' '}
-                  Phone:
-                </p>
-                <input
-                  value={infoUser.phone}
-                  className="border-2 w-[75%] py-[5px] px-[10px] rounded-[10px]"
-                  placeholder="Enter customer phone number"
-                  onChange={(e) =>
-                    dispatch(
-                      setInfoUser({ ...infoUser, phone: e.target.value })
-                    )
-                  }
-                />
-              </div>
-              <div className="w-[70%] flex mb-[20px]">
-                <p htmlFor="" className="text-[17px] mr-[10px] w-[25%]">
-                  {' '}
-                  Status:
-                </p>
-                <select
-                  id="countries"
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="w-[75%] border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5"
-                >
-                  <option selected={status === 'WAITTING'} value="WAITTING">
-                    WAITTING
-                  </option>
-                  <option selected={status === 'DELIVERED'} value="DELIVERED">
-                    DELIVERED
-                  </option>
-                  <option selected={status === 'FINISH'} value="FINISH">
-                    FINISH
-                  </option>
-                </select>
-              </div>
-              <p className="mt-[20px] font-bold">Product Informations</p>
-              <hr className="my-[10px] h-[1.5px]" />
-              <div>
-                <ul className="w-full flex uppercase justify-between text-center font-bold mb-[10px]">
-                  <li className="w-[20%]">image</li>
-                  <li className="w-[30%]">name</li>
-                  <li className="w-[10%]">color</li>
-                  <li className="w-[10%]">size</li>
-                  <li className="w-[10%]">quantities</li>
-                  <li className="w-[10%]">price</li>
-                  <li className="w-[10%]">total</li>
-                </ul>
-                <hr className="mb-[10px]" />
-                <div className="overflow-y-scroll h-[100px]">
+              <hr className="mt-[10px] h-[1.5px]" />
+              <table className="w-full table-fixed">
+                <thead className="w-full table">
+                  <tr className="border-b border-gray-300 text-center uppercase">
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      image
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      name
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      color
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      size
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      quantity
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      price
+                    </th>
+                    <th className="p-3 uppercase text-sm font-medium text-gray-500">
+                      total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="h-[240px] w-full overflow-auto block scroll-none mb-3">
                   {orderBody.cart &&
                     orderBody.cart.map((item, index) => {
                       return (
-                        <div
+                        <tr
                           key={index}
-                          className="w-full mb-[10px] flex uppercase justify-between items-center text-center"
+                          className="w-full text-center table table-fixed"
                         >
-                          <div className="w-[20%] flex justify-center">
+                          <td className="p-3 capitalize text-sm font-normal text-gray-400">
                             <img
                               src={`/${
                                 import.meta.env.VITE_PATH_IMAGE
@@ -192,10 +213,11 @@ const AdminOrder = () => {
                               alt=""
                               className="w-[80px]"
                             />
-                          </div>
-                          <p className="w-[30%] text-center">{item.name}</p>
-                          <div className="w-[10%] h-[20px]">
-                            {' '}
+                          </td>
+                          <td className="p-3 capitalize text-md">
+                            {item.name}
+                          </td>
+                          <td className="p-3 capitalize text-md">
                             <span
                               className="block w-[25px] h-[25px] rounded-full"
                               style={{
@@ -203,26 +225,36 @@ const AdminOrder = () => {
                                 margin: '0 auto',
                               }}
                             ></span>
-                          </div>
-                          <p className="w-[10%]">{item.size}</p>
-                          <p className="w-[10%]">{item.quantity}</p>
-                          <p className="w-[10%]">
+                          </td>
+                          <td className="p-3 capitalize text-md">
+                            {item.size}
+                          </td>
+                          <td className="p-3 capitalize text-md">
+                            {item.quantity}
+                          </td>
+                          <td className="p-3 capitalize text-md">
                             {currency.format(
                               discount(item.price, item.discount),
                               {
-                                code: 'USD',
+                                code: 'VND',
                               }
                             )}
-                          </p>
-                          <p className="w-[10%] ">
-                            {item.quantity *
-                              discount(item.price, item.discount)}
-                          </p>
-                        </div>
+                          </td>
+                          <td className="p-3 capitalize text-md font-semibold">
+                            {currency.format(
+                              item.quantity *
+                                discount(item.price, item.discount),
+                              {
+                                code: 'VND',
+                              }
+                            )}
+                          </td>
+                        </tr>
                       );
                     })}
-                </div>
-              </div>
+                </tbody>
+              </table>
+
               <div className="w-[100%] flex justify-end gap-x-[20px]">
                 <button
                   onClick={() => {
@@ -236,7 +268,7 @@ const AdminOrder = () => {
                       },
                     });
                   }}
-                  className="border-2 py-[5px] px-[10px] rounded-[7px] text-cyan-500 hover:bg-cyan-500 border-white hover:text-black mr-[40px]"
+                  className="btn btn-success"
                 >
                   Update
                 </button>

@@ -1,31 +1,42 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import ScreenHeader from "../../components/ScreenHeader";
-import Wrapper from "./Wrapper";
-import { useCreateMutation } from "../../redux/services/categoryService";
-import { setSuccess } from "../../redux/reducers/globalReducer";
-import ReactQuill from "react-quill";
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import ScreenHeader from '../../components/ScreenHeader';
+import Wrapper from './Wrapper';
+import { useCreateMutation } from '../../redux/services/categoryService';
+import { setSuccess } from '../../redux/reducers/globalReducer';
+import ReactQuill from 'react-quill';
 
-import { BsArrowLeftShort, BsLaptop } from "react-icons/bs";
-import ImagesPreview from "../../components/ImagesPreview";
-import laptop from "../../assets/img/laptop.jpg";
+import { BsArrowLeftShort, BsLaptop } from 'react-icons/bs';
+import ImagesPreview from '../../components/ImagesPreview';
+import laptop from '../../assets/img/laptop.jpg';
+import { showError } from '../../utils/ShowError';
+import { useForm } from 'react-hook-form';
+import useToastify from '../../hooks/useToatify';
 
 const CreateCategory = () => {
-  const [previewAvatar, setPreviewAvatar] = useState("");
-  const [errorAvatar, setErrorAvatar] = useState("");
-  const [value, setValue] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [previewAvatar, setPreviewAvatar] = useState('');
+  const [errorAvatar, setErrorAvatar] = useState('');
+  const [value, setValue] = useState('');
   const [state, setState] = useState({
-    name: "",
-    image: "",
+    name: '',
+    image: '',
   });
   const [preview, setPreview] = useState([]);
+  const [error, setErrors] = useState([]);
+  const [image, setImage] = useState(null);
+  const toast = useToastify();
 
   const handleInput = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
   const [saveCategory, data] = useCreateMutation();
-  const errors = data?.error?.data?.errors ? data?.error?.data?.errors : [];
+  // const errors = data?.error?.data?.errors ? data?.error?.data?.errors : [];
 
   const imageHandle = (e) => {
     if (e.target.files.length !== 0) {
@@ -38,21 +49,26 @@ const CreateCategory = () => {
     }
   };
 
-  const submitCategory = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", state.name);
-    formData.append("description", value);
-    formData.append("image", state.image);
-    saveCategory(formData);
-  };
+  useEffect(() => {
+    if (data?.isError) {
+      // console.log(data?.error?.data?.errors);
+      setErrors(data?.error?.data?.errors);
+      if (data?.error?.data?.errors) {
+        toast.handleOpenToastify(
+          'error',
+          data?.error?.data?.errors[0].msg,
+          1000
+        );
+      }
+    }
+  }, [data?.isError]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     if (data?.isSuccess) {
       dispatch(setSuccess(data?.data?.message));
-      navigate("/admin/categories");
+      navigate('/admin/categories');
     }
   }, [data?.isSuccess]);
 
@@ -65,7 +81,18 @@ const CreateCategory = () => {
   const handleChooseAvatar = (e) => {
     const file = e.target.files[0];
     setPreviewAvatar(URL.createObjectURL(file));
-    setErrorAvatar("");
+    setImage(file);
+    setErrorAvatar('');
+  };
+
+  const submitCategory = (data) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('description', value);
+    if (image) {
+      formData.append('image', image);
+    }
+    saveCategory(formData);
   };
 
   return (
@@ -78,13 +105,13 @@ const CreateCategory = () => {
           </button>
         </Link>
       </ScreenHeader>
-      <form className="w-full md:w-full" onSubmit={submitCategory}>
-        {errors.length > 0 &&
-          errors.map((error, key) => (
-            <p className="alert-danger mx-3" key={key}>
-              {error.msg}
-            </p>
-          ))}
+      <form
+        className="w-full md:w-full"
+        onSubmit={handleSubmit(submitCategory)}
+      >
+        {errors.name && (
+          <p className="alert-danger mx-3">{errors.name.message}</p>
+        )}
         <div className="p-3">
           <label
             htmlFor="Category's name"
@@ -95,10 +122,13 @@ const CreateCategory = () => {
           <input
             type="text"
             name="name"
-            className="text-sm rounded border focus:border-green-700 focus:border-2 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none"
+            className={`text-sm rounded border focus:border-green-700 focus:border-2 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white outline-none `}
             placeholder="Category Name..."
-            value={state.name}
-            onChange={handleInput}
+            // value={state.name}
+            // onChange={handleInput}
+            {...register('name', {
+              required: "Category's name is required",
+            })}
           />
         </div>
         <div className="w-full p-3">
@@ -124,21 +154,15 @@ const CreateCategory = () => {
           >
             Image
           </label>
-          <div className="my-[50px] flex flex-col justify-center items-center">
+          <div className="my-2 flex flex-col justify-center items-center">
             {previewAvatar ? (
               <img
                 src={previewAvatar}
                 alt=""
-                className="h-[200px] w-[200px] rounded-[50%] object-cover mb-[10px]"
+                className="w-2/3 rounded object-cover mb-3 border-dashed border-gray-500 border-2 p-3"
               />
             ) : (
-              <div>
-                <img
-                  src={laptop}
-                  alt=""
-                  className="h-[200px] w-[200px] rounded-[50%] object-cover mb-[10px]"
-                />
-              </div>
+              <></>
             )}
             <input
               type="file"
@@ -169,7 +193,7 @@ const CreateCategory = () => {
         <div className="mb-3">
           <input
             type="submit"
-            value={data.isLoading ? "loading..." : "Create Category"}
+            value={data.isLoading ? 'loading...' : 'Create Category'}
             disabled={data.isLoading ? true : false}
             className="px-5 py-3 bg-[#242424] rounded-md hover:bg-green-700 flex justify-center items-center gap-2 hover:cursor-pointer"
           />

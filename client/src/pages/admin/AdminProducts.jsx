@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
-import { clearMessage, setSuccess } from "../../redux/reducers/globalReducer";
-import Wrapper from "./Wrapper";
+import { useEffect, useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import currency from 'currency-formatter';
+import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
+import { clearMessage, setSuccess } from '../../redux/reducers/globalReducer';
+import Wrapper from './Wrapper';
 import {
   useGetProductsQuery,
   useDeleteProductMutation,
   useUpdateProductMutation,
-} from "../../redux/services/productService";
+} from '../../redux/services/productService';
 import Swal from 'sweetalert2';
-import { useForm } from "react-hook-form";
-import { useAllCategoriesQuery } from "../../redux/services/categoryService";
-import ScreenHeader from "../../components/ScreenHeader";
-import Spinner from "../../components/Spinner";
-import Pagination from "../../components/Pagination";
-import Modal from "../../components/Modal";
-import ModalEditProduct from "../../components/ModalEditroduct";
-import { validate } from "../../utils/validate";
+import { useForm } from 'react-hook-form';
+import { useAllCategoriesQuery } from '../../redux/services/categoryService';
+import ScreenHeader from '../../components/ScreenHeader';
+import Spinner from '../../components/Spinner';
+import Pagination from '../../components/Pagination';
+import Modal from '../../components/Modal';
+import ModalEditProduct from '../../components/ModalEditroduct';
+import { validate } from '../../utils/validate';
 const AdminProducts = () => {
   let { page } = useParams();
   if (!page) {
@@ -38,7 +39,7 @@ const AdminProducts = () => {
       discount: '',
       stock: '',
       category: '',
-    }
+    },
   });
 
   useEffect(() => {
@@ -59,50 +60,50 @@ const AdminProducts = () => {
   const categories = useAllCategoriesQuery();
 
   const [sizes] = useState([
-    "xsm",
-    "sm",
-    "md",
-    "lg",
-    "xl",
-    "1 year",
-    "2 years",
-    "3 years",
-    "4 years",
-    "5 years",
+    'xsm',
+    'sm',
+    'md',
+    'lg',
+    'xl',
+    '1 year',
+    '2 years',
+    '3 years',
+    '4 years',
+    '5 years',
   ]);
-  const [colorList, setColorList] = useState([])
+  const [colorList, setColorList] = useState([]);
   const [sizeList, setSizeList] = useState([]);
-  const [description, setDescription] = useState("");
-  const [listImagePreview, setListImagePreview] = useState([])
-  const [files, setFiles] = useState(null)
+  const [description, setDescription] = useState('');
+  const [listImagePreview, setListImagePreview] = useState([]);
+  const [files, setFiles] = useState(null);
   const [idProduct, setIdProduct] = useState('');
 
   const [errorVali, setErrorVali] = useState({
     size: '',
     color: '',
     desc: '',
-    img: ''
-  })
-  
+    img: '',
+  });
+
   const saveColors = (color) => {
     const filtered = colorList.filter((clr) => clr !== color.hex);
     setColorList([...filtered, color.hex]);
-    setErrorVali({...errorVali, color: ""})
+    setErrorVali({ ...errorVali, color: '' });
   };
   const deleteColor = (color) => {
     const filtered = colorList.filter((clr) => clr !== color);
     setColorList([...filtered]);
-    setErrorVali({...errorVali, color: "Colors is required"})
+    setErrorVali({ ...errorVali, color: 'Colors is required' });
   };
   const chooseSize = (size) => {
     let result = sizeList;
     if (result.includes(size)) {
-      result = result.filter((s) => s !== size)
+      result = result.filter((s) => s !== size);
     } else {
-      result = [...result, size]
+      result = [...result, size];
     }
     setSizeList([...result]);
-    setErrorVali({...errorVali, size: ""})
+    setErrorVali({ ...errorVali, size: '' });
   };
 
   const { success } = useSelector((state) => state.globalReducer);
@@ -142,60 +143,61 @@ const AdminProducts = () => {
   }, []);
 
   const handleEdit = (product) => {
-    setOpenModal(true)
-    setIdProduct(product.id)
-    setValue('name', product.name)
-    setValue('price', product.price)
-    setValue('stock', product.stock)
-    setValue('discount', product.discount)
-    setValue('category', product.category)
-    setColorList(product.colors)
-    setSizeList(product.sizes)
-    setDescription(product.description)
+    setOpenModal(true);
+    setIdProduct(product.id);
+    setValue('name', product.name);
+    setValue('price', product.price);
+    setValue('stock', product.stock);
+    setValue('discount', product.discount);
+    setValue('category', product.category);
+    setColorList(product.colors);
+    setSizeList(product.sizes);
+    setDescription(product.description);
     let imgs = [];
-    for(const image of product.images) {
-      imgs = [...imgs, `../${
-        import.meta.env.VITE_PATH_IMAGE
-      }/products/${image}`]
+    for (const image of product.images) {
+      imgs = [
+        ...imgs,
+        `../${import.meta.env.VITE_PATH_IMAGE}/products/${image}`,
+      ];
     }
-    setListImagePreview(imgs)
-  }
+    setListImagePreview(imgs);
+  };
 
   const handleSubmitProduct = (data) => {
-    const result = validate(sizeList, colorList, description, listImagePreview)
-    setErrorVali({...errorVali, ...result})
-    if(result.size || result.color || result.desc || result.img) {
+    const result = validate(sizeList, colorList, description, listImagePreview);
+    setErrorVali({ ...errorVali, ...result });
+    if (result.size || result.color || result.desc || result.img) {
       return;
     }
 
     const formData = new FormData();
     for (const [key, value] of Object.entries(data)) {
-      formData.append(key, value)
+      formData.append(key, value);
     }
 
-    if(files) {
+    if (files) {
       Object.entries(files).forEach((item) => {
-        formData.append('images', item[1])
-      })
+        formData.append('images', item[1]);
+      });
     }
 
     for (const color of colorList) {
-      formData.append('colors', color)
+      formData.append('colors', color);
     }
 
     for (const size of sizeList) {
-      formData.append('sizes', size)
+      formData.append('sizes', size);
     }
 
-    formData.append('description', description)
+    formData.append('description', description);
     updateProduct({
       id: idProduct,
-      body: formData
-    })
-  }
+      body: formData,
+    });
+  };
 
   return (
-    <div className="relative" >
+    <div className="relative">
       <Wrapper>
         <ScreenHeader>
           <Link to="/admin/create-product" className="btn-dark">
@@ -270,15 +272,16 @@ const AdminProducts = () => {
                         {product.name}
                       </td>
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
-                        ${product.price}.00
+                        {currency.format(product.price, { code: 'VND' })}
                       </td>
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
                         {product.stock}
                       </td>
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
                         <img
-                          src={`/${import.meta.env.VITE_PATH_IMAGE}/products/${product.images[0]
-                            }`}
+                          src={`/${import.meta.env.VITE_PATH_IMAGE}/products/${
+                            product.images[0]
+                          }`}
                           alt="image name"
                           className="w-20 h-20 rounded-md object-cover"
                         />
@@ -286,7 +289,7 @@ const AdminProducts = () => {
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
                         <a
                           onClick={() => handleEdit(product)}
-                          className="btn btn-warning"
+                          className="btn btn-indigo"
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
                         >
@@ -313,7 +316,7 @@ const AdminProducts = () => {
               />
             </div>
           ) : (
-            "No products!"
+            <div className="alert-danger rounded-sm">No products!</div>
           )
         ) : (
           <Spinner />

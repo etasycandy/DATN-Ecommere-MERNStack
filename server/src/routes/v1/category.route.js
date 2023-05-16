@@ -35,7 +35,7 @@ const router = express.Router();
 router
   .route("/")
   .post(
-    [categoryValidation, Authorization.authorized],
+    [Authorization.authorized],
     upload.single("image"),
     categoryController.create,
   )

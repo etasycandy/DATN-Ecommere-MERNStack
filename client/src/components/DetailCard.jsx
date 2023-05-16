@@ -134,7 +134,7 @@ const DetailsCard = ({ product }) => {
   const handleComment = () => {
     if (userToken) {
       if (comment.rating === 0 || !comment.content) {
-        return setErrorComment('Vui lòng chọn sao và nội dung bình luận')
+        return setErrorComment('Vui lòng chọn sao và nội dung bình luận');
       }
       createReview({
         rating: comment.rating,
@@ -161,7 +161,7 @@ const DetailsCard = ({ product }) => {
       reviews.refetch();
       handleChooseSumStar(0);
       setComment({ rating: 0, content: '' });
-      setErrorComment('')
+      setErrorComment('');
       setPage(1);
       toast.success('You review product successfully!');
     }
@@ -201,7 +201,11 @@ const DetailsCard = ({ product }) => {
                 className="mySwiper"
               >
                 {product.images.map((image, index) => (
-                  <SwiperSlide className='swiper-slide-detail-cart' key={index} onClick={() => setImage(image)}>
+                  <SwiperSlide
+                    className="swiper-slide-detail-cart"
+                    key={index}
+                    onClick={() => setImage(image)}
+                  >
                     <img
                       src={`../${
                         import.meta.env.VITE_PATH_IMAGE
@@ -215,16 +219,16 @@ const DetailsCard = ({ product }) => {
         )}
       </div>
       <div className="w-full order-1 md:order-2 md:w-6/12 p-5">
-        <h1 className="text-2xl font-bold text-gray-900 capitalize">
+        <h1 className="text-3xl font-bold text-gray-900 capitalize">
           {product.name}
         </h1>
-        <div className="flex gap-7 items-start my-5">
+        <div className="flex gap-5 items-start my-5">
           <span className="text-2xl font-bold text-gray-900">
             {' '}
-            {currency.format(discountPrice, { code: 'USD' })}
+            {currency.format(discountPrice, { code: 'VND' })}
           </span>
-          <span className="text-xl line-through text-yellow-500">
-            {currency.format(product.price, { code: 'USD' })}
+          <span className="text-lg font-light line-through text-yellow-500">
+            {currency.format(product.price, { code: 'VND' })}
           </span>
         </div>
 
@@ -298,9 +302,11 @@ const DetailsCard = ({ product }) => {
         <div className="mt-4 leading-[27px] description">{desc}</div>
       </div>
       <div className="w-full order-3 px-5 items-center">
-        <div className="">
-          <p>Rating</p>
-          <div className=" flex justify-start">
+        <hr className="w-1/3 h-0.5 mx-auto bg-gray-100 border-0 rounded mt-5 mb-3 dark:bg-gray-700"></hr>
+        <h1 className="uppercase font-bold text-3xl text-center">Reviews</h1>
+
+        <div className="mt-7">
+          <div className="flex justify-start">
             {[1, 2, 3, 4, 5].map((item) => (
               <StarIcon
                 key={item}
@@ -310,25 +316,25 @@ const DetailsCard = ({ product }) => {
               />
             ))}
           </div>
-          <p className="italic font-sans flex justify-start">
+          <p className="italic font-sans flex justify-start my-2">
             Rating: {sumStar}/5
           </p>
         </div>
-            <Comment
-              setComment={setComment}
-              comment={comment}
-              onComment={handleComment}
-              setErrorComment={setErrorComment}
-              errorComment={errorComment}
-              comments={reviews.data?.reviews}
-              colorIcon={'orange'}
-            />
-            <Pagination
-              page={parseInt(page)}
-              perPage={limit}
-              count={reviews.data?.count}
-              click={(p) => setPage(p)}
-            />
+        <Comment
+          setComment={setComment}
+          comment={comment}
+          onComment={handleComment}
+          setErrorComment={setErrorComment}
+          errorComment={errorComment}
+          comments={reviews.data?.reviews}
+          colorIcon={'orange'}
+        />
+        <Pagination
+          page={parseInt(page)}
+          perPage={limit}
+          count={reviews.data?.count}
+          click={(p) => setPage(p)}
+        />
       </div>
     </motion.div>
   );

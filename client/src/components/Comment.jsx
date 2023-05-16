@@ -20,7 +20,7 @@ function Comment({
           setComment({ ...comment, content: e.target.value });
           setErrorComment('');
         }}
-        className=" placeholder:text-sm my-2 resize-y rounded-md w-full p-3 drop-shadow-lg border border-x-gray-500"
+        className=" placeholder:text-sm my-2 resize-y rounded-md w-full p-3 drop-shadow border border-x-gray-500 outline-none"
         placeholder="Enter your comment..."
       ></textarea>
       <div className="h-[30px]">

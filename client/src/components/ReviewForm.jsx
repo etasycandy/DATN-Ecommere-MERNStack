@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { useForm } from "../hooks/Form";
-import toast, { Toaster } from "react-hot-toast";
-import { usePostReviewMutation } from "../redux/services/userOrdersService";
+import { useEffect } from 'react';
+import { useForm } from '../hooks/Form';
+import toast, { Toaster } from 'react-hot-toast';
+import { usePostReviewMutation } from '../redux/services/userOrdersService';
 
 const ReviewForm = ({ state, toggleReview, data }) => {
-  console.log("form data: ", data);
+  // console.log("form data: ", data);
   const { state: ratingState, onChange } = useForm({
-    rating: "",
-    message: "",
+    rating: '',
+    message: '',
   });
   const [submitReview, response] = usePostReviewMutation();
-  console.log("Response: ", response);
+  // console.log("Response: ", response);
   const addReview = (e) => {
     e.preventDefault();
     submitReview({
@@ -20,7 +20,7 @@ const ReviewForm = ({ state, toggleReview, data }) => {
       id: data.details?._id,
     });
   };
-  console.log("response: ", response);
+  // console.log("response: ", response);
   useEffect(() => {
     if (response.isSuccess) {
       toast.success(response?.data?.msg);
@@ -103,7 +103,7 @@ const ReviewForm = ({ state, toggleReview, data }) => {
       </div>
     </>
   ) : (
-    ""
+    ''
   );
 };
 export default ReviewForm;

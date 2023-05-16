@@ -2,8 +2,15 @@
   @apply py-3 px-5 text-white rounded uppercase;
 }
 .btn-warning {
-  @apply bg-orange-500 py-[6px] hover:bg-orange-600;
+  @apply bg-orange-500 py-[6px] hover:bg-orange-600 hover:cursor-pointer;
 }
 .btn-danger {
-  @apply bg-rose-700 py-[6px] hover:bg-rose-800;
+  @apply bg-red-700 py-[6px] hover:bg-red-800 hover:cursor-pointer;
+}
+.btn-indigo {
+  @apply bg-indigo-500 py-[6px] hover:bg-indigo-600 hover:cursor-pointer;
+}
+
+.btn-success {
+  @apply bg-green-600 py-[6px] hover:bg-green-800 hover:cursor-pointer;
 }

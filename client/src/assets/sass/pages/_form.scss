@@ -1,3 +1,11 @@
 .input-file {
   @apply block file:py-2.5 file:px-4 file:rounded file:cursor-pointer file:bg-[#242424] file:hover:bg-green-700 file:text-white file:text-sm file:font-medium file:mr-4;
 }
+
+.text-err {
+  @apply text-sm italic text-red-400;
+}
+
+.input-white {
+  @apply rounded border-2 border-gray-300 focus:border-green-700 block w-full p-2 bg-slate-200 placeholder-gray-400 text-[#242424] outline-none;
+}

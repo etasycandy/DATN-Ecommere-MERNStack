@@ -27,3 +27,10 @@ input {
 // img {
 //     max-width: 100%;
 // }
+
+.scroll-none::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+

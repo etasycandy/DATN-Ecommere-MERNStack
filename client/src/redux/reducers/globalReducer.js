@@ -1,26 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const globalReducer = createSlice({
-  name: "global",
+  name: 'global',
   initialState: {
-    success: "",
+    success: '',
     searchBar: false,
-    breadCrumb: "",
+    breadCrumb: '',
   },
   reducers: {
     setSuccess: (state, action) => {
-      console.log(action);
+      // console.log(action);
       state.success = action.payload;
     },
     clearMessage: (state) => {
-      state.success = "";
+      state.success = '';
     },
     toggleSearchBar: (state) => {
       state.searchBar = !state.searchBar;
     },
     setBreadCrumb: (state, action) => {
       state.breadCrumb = action.payload;
-      localStorage.setItem("breadCrumbLocal", JSON.stringify(state.breadCrumb));
+      localStorage.setItem('breadCrumbLocal', JSON.stringify(state.breadCrumb));
     },
   },
 });

@@ -47,7 +47,7 @@ const CreateCustomer = ({ onSubmit }) => {
 
   useEffect(() => {
     if (data?.isError) {
-      console.log(data);
+      // console.log(data);
       setErrors(data?.error?.data?.errors);
       if (data?.error?.data?.errors) {
         toast.handleOpenToastify(

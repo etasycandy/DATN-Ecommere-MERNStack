@@ -1,8 +1,8 @@
-import React from "react";
-import { useAllProductsQuery } from "../redux/services/productService";
-import Skeleton from "./skeleton/Skeleton";
-import Thumbnail from "./skeleton/Thumbnail";
-import ProductCard from "./ProductCard";
+import React from 'react';
+import { useAllProductsQuery } from '../redux/services/productService';
+import Skeleton from './skeleton/Skeleton';
+import Thumbnail from './skeleton/Thumbnail';
+import ProductCard from './ProductCard';
 
 const NewProduct = ({ handleSetBreadCrumb }) => {
   const { data, isFetching } = useAllProductsQuery();

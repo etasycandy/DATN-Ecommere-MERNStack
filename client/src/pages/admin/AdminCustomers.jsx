@@ -11,6 +11,7 @@ import {
 } from '../../redux/services/authService';
 import Spinner from '../../components/Spinner';
 import Pagination from '../../components/Pagination';
+import Swal from 'sweetalert2';
 
 const AdminCustomers = () => {
   let { page } = useParams();
@@ -20,11 +21,23 @@ const AdminCustomers = () => {
   const { success } = useSelector((state) => state.globalReducer);
   const dispatch = useDispatch();
   const { data = [], isFetching, refetch } = useGetQuery(page);
-  const [removeCategory, response] = useDeleteCustomerMutation();
+  const [removeCustomer, response] = useDeleteCustomerMutation();
+
   const deleteCustomer = (id) => {
-    if (window.confirm('Are you really want to delete the customer?')) {
-      removeCategory(id);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to delete this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        removeCustomer(id);
+      }
+    });
   };
   useEffect(() => {
     if (response.isSuccess) {

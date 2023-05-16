@@ -1,15 +1,16 @@
-import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import ScreenHeader from "../../components/ScreenHeader";
-import Wrapper from "./Wrapper";
-import { clearMessage, setSuccess } from "../../redux/reducers/globalReducer";
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import ScreenHeader from '../../components/ScreenHeader';
+import Wrapper from './Wrapper';
+import { clearMessage, setSuccess } from '../../redux/reducers/globalReducer';
 import {
   useGetQuery,
   useDeleteCategoryMutation,
-} from "../../redux/services/categoryService";
-import Spinner from "../../components/Spinner";
-import Pagination from "../../components/Pagination";
+} from '../../redux/services/categoryService';
+import Spinner from '../../components/Spinner';
+import Pagination from '../../components/Pagination';
+import Swal from 'sweetalert2';
 
 const Categories = () => {
   let { page } = useParams();
@@ -20,12 +21,24 @@ const Categories = () => {
   const dispatch = useDispatch();
   const { data = [], isFetching } = useGetQuery(page);
   const [removeCategory, response] = useDeleteCategoryMutation();
-  // console.log(data);
+
   const deleteCat = (id) => {
-    if (window.confirm("Are you really want to delete the category?")) {
-      removeCategory(id);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to delete this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        removeCategory(id);
+      }
+    });
   };
+
   useEffect(() => {
     if (response.isSuccess) {
       dispatch(setSuccess(response?.data?.message));
