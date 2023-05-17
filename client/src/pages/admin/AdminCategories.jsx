@@ -98,7 +98,7 @@ const Categories = () => {
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
                         <Link
                           to={`/admin/update-category/${category.id}`}
-                          className="btn btn-warning"
+                          className="btn btn-indigo"
                         >
                           edit
                         </Link>

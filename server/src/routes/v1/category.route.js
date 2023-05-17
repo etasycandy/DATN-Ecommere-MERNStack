@@ -51,7 +51,7 @@ router
   .route("/:id")
   .get(Authorization.authorized, categoryController.fetch)
   .patch(
-    [categoryValidation, Authorization.authorized],
+    [Authorization.authorized],
     upload.single("image"),
     categoryController.update,
   )

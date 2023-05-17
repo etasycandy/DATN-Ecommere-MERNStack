@@ -193,8 +193,8 @@ const CreateProduct = ({ onSubmit }) => {
               >
                 Discount
               </label>
-              <div className=" justify-center items-center gap-3">
-                <div className="flex">
+              <div className=" ">
+                <div className="flex justify-center items-center gap-3">
                   <input
                     type="number"
                     name="discount"

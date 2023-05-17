@@ -1,23 +1,23 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import ScreenHeader from "../../components/ScreenHeader";
-import Wrapper from "./Wrapper";
-import { setSuccess } from "../../redux/reducers/globalReducer";
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import ScreenHeader from '../../components/ScreenHeader';
+import Wrapper from './Wrapper';
+import { setSuccess } from '../../redux/reducers/globalReducer';
 import {
   useFetchCategoryQuery,
   useUpdateCategoryMutation,
-} from "../../redux/services/categoryService";
-import Spinner from "../../components/Spinner";
-import { BsArrowLeftShort } from "react-icons/bs";
-import ImagesPreview from "../../components/ImagesPreview";
-import ReactQuill from "react-quill";
+} from '../../redux/services/categoryService';
+import Spinner from '../../components/Spinner';
+import { BsArrowLeftShort } from 'react-icons/bs';
+import ImagesPreview from '../../components/ImagesPreview';
+import ReactQuill from 'react-quill';
 
 const UpdateCategory = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [state, setState] = useState({
-    name: "",
-    image: "",
+    name: '',
+    image: '',
   });
   const [preview, setPreview] = useState([]);
 
@@ -38,13 +38,11 @@ const UpdateCategory = () => {
 
   const { id } = useParams();
   const { data, isFetching } = useFetchCategoryQuery(id);
-  //   console.log("category data: ", data);
   useEffect(() => {
     data?.category && setState({ name: data?.category?.name });
     setValue(data?.category?.description);
   }, [data?.category]);
   const [saveCategory, response] = useUpdateCategoryMutation();
-  //   console.log(response);
   const errors = response?.error?.data?.errors
     ? response?.error?.data?.errors
     : [];
@@ -52,10 +50,10 @@ const UpdateCategory = () => {
   const updateSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", state.name);
-    formData.append("description", value);
+    formData.append('name', state.name);
+    formData.append('description', value);
     if (state.image !== undefined) {
-      formData.append("image", state.image);
+      formData.append('image', state.image);
     }
     saveCategory({ formData, id });
   };
@@ -65,7 +63,7 @@ const UpdateCategory = () => {
   useEffect(() => {
     if (response?.isSuccess) {
       dispatch(setSuccess(response?.data?.message));
-      navigate("/admin/categories");
+      navigate('/admin/categories');
     }
   }, [response?.isSuccess]);
 
@@ -171,7 +169,7 @@ const UpdateCategory = () => {
           <div className="mb-3 m-3">
             <input
               type="submit"
-              value={data.isLoading ? "loading..." : "Update"}
+              value={data.isLoading ? 'loading...' : 'Update'}
               disabled={data.isLoading ? true : false}
               className="px-5 py-3 bg-[#242424] rounded-md hover:bg-green-700 flex justify-center items-center gap-2 hover:cursor-pointer"
             />

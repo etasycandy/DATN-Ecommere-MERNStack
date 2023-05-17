@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const authService = createApi({
-  reducerPath: "auth",
+  reducerPath: 'auth',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_ENDPOINT,
   }),
@@ -10,8 +10,8 @@ const authService = createApi({
       authLogin: builder.mutation({
         query: (loginData) => {
           return {
-            url: "users/login",
-            method: "POST",
+            url: 'users/login',
+            method: 'POST',
             body: loginData,
           };
         },
@@ -19,8 +19,8 @@ const authService = createApi({
       userRegister: builder.mutation({
         query: (data) => {
           return {
-            url: "users/register",
-            method: "POST",
+            url: 'users/register',
+            method: 'POST',
             body: data,
           };
         },
@@ -28,8 +28,8 @@ const authService = createApi({
       createCustomer: builder.mutation({
         query: (data) => {
           return {
-            url: "users",
-            method: "POST",
+            url: 'users',
+            method: 'POST',
             body: data,
           };
         },
@@ -37,8 +37,8 @@ const authService = createApi({
       userLogin: builder.mutation({
         query: (loginData) => {
           return {
-            url: "users/login",
-            method: "POST",
+            url: 'users/login',
+            method: 'POST',
             body: loginData,
           };
         },
@@ -47,19 +47,28 @@ const authService = createApi({
         query: (page) => {
           return {
             url: `users/pages/${page}`,
-            method: "GET",
+            method: 'GET',
           };
         },
-        providesTags: ["users"],
+        providesTags: ['users'],
       }),
       deleteCustomer: builder.mutation({
         query: (id) => {
           return {
             url: `users/delete/${id}`,
-            method: "DELETE",
+            method: 'DELETE',
           };
         },
-        invalidatesTags: ["users"],
+        invalidatesTags: ['users'],
+      }),
+      fetchUser: builder.query({
+        query: (id) => {
+          return {
+            url: `users/fetch-user/${id}`,
+            method: 'GET',
+          };
+        },
+        providesTags: ['users'],
       }),
     };
   },
@@ -71,5 +80,6 @@ export const {
   useUserLoginMutation,
   useGetQuery,
   useDeleteCustomerMutation,
+  useFetchUserQuery,
 } = authService;
 export default authService;

@@ -23,31 +23,11 @@ const CreateCategory = () => {
   const [previewAvatar, setPreviewAvatar] = useState('');
   const [errorAvatar, setErrorAvatar] = useState('');
   const [value, setValue] = useState('');
-  const [state, setState] = useState({
-    name: '',
-    image: '',
-  });
-  const [preview, setPreview] = useState([]);
   const [error, setErrors] = useState([]);
   const [image, setImage] = useState(null);
   const toast = useToastify();
 
-  const handleInput = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
   const [saveCategory, data] = useCreateMutation();
-  // const errors = data?.error?.data?.errors ? data?.error?.data?.errors : [];
-
-  const imageHandle = (e) => {
-    if (e.target.files.length !== 0) {
-      setState({ ...state, [e.target.name]: e.target.files[0] });
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview({ ...preview, [e.target.name]: reader.result });
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
 
   useEffect(() => {
     if (data?.isError) {

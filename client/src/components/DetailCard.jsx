@@ -24,6 +24,7 @@ import Comment from './Comment';
 import StarIcon from './StarIcon';
 import { useNavigate } from 'react-router-dom';
 import Spinner from './Spinner';
+import { render } from 'react-dom';
 
 const DetailsCard = ({ product }) => {
   const [sizeState, setSizeState] = useState(

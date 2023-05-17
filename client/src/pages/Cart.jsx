@@ -246,12 +246,15 @@ const Cart = () => {
                           {currency.format(
                             discount(item.price, item.discount),
                             {
-                              code: 'USD',
+                              code: 'VND',
                             }
                           )}
                         </td>
                         <td className="p-3 capitalize text-sm font-normal text-gray-700">
-                          {item.quantity * discount(item.price, item.discount)}
+                          {currency.format(
+                            item.quantity * discount(item.price, item.discount),
+                            { code: 'VND' }
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -344,7 +347,7 @@ const Cart = () => {
                           {currency.format(
                             discount(item.price, item.discount),
                             {
-                              code: 'USD',
+                              code: 'VND',
                             }
                           )}
                         </td>
@@ -357,7 +360,11 @@ const Cart = () => {
                             theme="indigo"
                           />
                         </td>
-                        <td className="td font-bold text-center">{total}</td>
+                        <td className="td font-bold text-center">
+                          {currency.format(total, {
+                            code: 'VND',
+                          })}
+                        </td>
                         <td className="td">
                           <BsTrash
                             className="text-rose-600 cursor-pointer"
@@ -375,7 +382,7 @@ const Cart = () => {
             <div className="bg-indigo-50 p-4 flex justify-end mt-5 rounded-md">
               <div>
                 <span className="text-lg font-semibold text-indigo-800 mr-10">
-                  {currency.format(total, { code: 'USD' })}
+                  {currency.format(total, { code: 'VND' })}
                 </span>
                 <button
                   className="btn bg-green-700 text-sm font-medium p-2.5 text-white rounded hover:bg-green-600"

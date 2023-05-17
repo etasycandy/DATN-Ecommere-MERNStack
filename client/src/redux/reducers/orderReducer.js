@@ -12,6 +12,7 @@ const orderReducer = createSlice({
   },
   reducers: {
     setInfoUser: (state, action) => {
+      console.log(state);
       state.infoUser = { ...action.payload };
     },
     setStatusOrder: (state, action) => {

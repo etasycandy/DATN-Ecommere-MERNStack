@@ -53,6 +53,8 @@ router
 
 router.route("/delete/:id").delete(userController.deleteUser);
 
+router.route("/fetch-user/:id").get(userController.fetchUser);
+
 router.route("/pages/:page").get(userController.paginate);
 
 module.exports = router;

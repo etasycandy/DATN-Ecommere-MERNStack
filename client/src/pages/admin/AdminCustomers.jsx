@@ -117,7 +117,7 @@ const AdminCustomers = () => {
                       <td className="p-3 capitalize text-sm font-normal text-gray-400">
                         <Link
                           to={`/admin/update-user/${user.id}`}
-                          className="btn btn-warning"
+                          className="btn btn-indigo"
                         >
                           edit
                         </Link>

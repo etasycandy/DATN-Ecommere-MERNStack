@@ -330,7 +330,7 @@ const AdminOrder = () => {
                         </td>
                         <td className="p-3 capitalize text-sm font-normal text-gray-400 text-center">
                           <a
-                            className="btn btn-warning"
+                            className="btn btn-indigo"
                             onClick={() => {
                               setOrderBody({ ...item });
                               setStatus(item.status);

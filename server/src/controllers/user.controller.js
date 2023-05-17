@@ -65,6 +65,15 @@ const getUsers = async (req, res) => {
   }
 };
 
+const fetchUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json("Server internal error!");
+  }
+};
+
 const updateUser = async (req, res) => {
   const { id, fullname, username, email, password, admin } = req.body;
   const { file } = req;
@@ -144,4 +153,11 @@ const paginate = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUsers, updateUser, deleteUser, paginate };
+module.exports = {
+  createUser,
+  getUsers,
+  updateUser,
+  deleteUser,
+  paginate,
+  fetchUser,
+};
